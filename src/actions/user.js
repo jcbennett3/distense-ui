@@ -1,12 +1,15 @@
+import { BigNumber } from 'bignumber.js'
 import * as contracts from '../contracts'
 
+import { store } from '../index'
 import {
   RECEIVE_ACCOUNT,
   RECEIVE_HAS_WEB3,
   RECEIVE_NETWORK,
   RECEIVE_USER_NOT_AUTHENTICATED,
   RECEIVE_USER_NUM_DID,
-  RECEIVE_USER_NUM_ETHER
+  RECEIVE_USER_NUM_ETHER,
+  RECEIVE_USER_PCT_DID
 } from '../constants/actionTypes'
 
 import { setDefaultStatus } from './status'
@@ -34,6 +37,10 @@ export const receiveAccountNumDID = numDIDOwned => ({
   numDIDOwned
 })
 
+export const receiveAccountPctDID = pctDIDOwned => ({
+  type: RECEIVE_USER_PCT_DID,
+  pctDIDOwned
+})
 export const receiveAccountNumEther = numEther => ({
   type: RECEIVE_USER_NUM_ETHER,
   numEther
@@ -59,11 +66,18 @@ export const selectUserAccountInfo = () => async dispatch => {
       if (accounts && accounts.length) {
         const coinbase = accounts[0]
         dispatch(receiveAccountAction(coinbase))
+
         let numDIDOwned = await getNumDIDByAddress(coinbase)
         numDIDOwned = numDIDOwned.toString()
         console.log(`coinbase: ${coinbase}`)
         console.log(`coinbase owns: ${numDIDOwned} DID`)
         dispatch(receiveAccountNumDID(numDIDOwned))
+
+        const totalSupplyDID = store.getState().status.distense.totalSupplyDID
+
+        const pctDIDOwned = new BigNumber(numDIDOwned).div(totalSupplyDID).dp(3)
+        dispatch(receiveAccountPctDID(pctDIDOwned))
+
         web3.eth.getBalance(coinbase, (err, numEther) => {
           numEther = web3.fromWei(numEther)
           console.log(`coinbase owns: ${numEther} ether`)

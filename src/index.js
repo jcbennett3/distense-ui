@@ -31,7 +31,10 @@ import FourOhFour from './pages/FourOhFour'
 import GetStarted from './pages/GetStarted'
 import SolidityEngineerJob from './pages/SolidityEngineer'
 
-const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)))
+export const store = createStore(
+  reducers,
+  composeWithDevTools(applyMiddleware(thunk))
+)
 
 store.dispatch(selectUserAccountInfo())
 store.dispatch(getContractEvents())

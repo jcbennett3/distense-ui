@@ -81,26 +81,6 @@ const status = (
       return Object.assign({}, state, {
         message: 'Received pull request'
       })
-    case actions.REQUEST_IPFS_NODE:
-      return Object.assign({}, state, {
-        message: 'Requesting IPFS node'
-      })
-    case actions.RECEIVE_IPFS_NODE:
-      return Object.assign({}, state, {
-        message: 'Received IPFS node'
-      })
-    case actions.SUBMIT_IPFS_HASH:
-      return Object.assign({}, state, {
-        message: 'Adding IPFS hash'
-      })
-    case actions.RECEIVE_IPFS_HASH:
-      return Object.assign({}, state, {
-        message: 'Receiving IPFS hash'
-      })
-    case actions.REQUEST_IPFS_HASH:
-      return Object.assign({}, state, {
-        message: 'Requested IPFS hash'
-      })
     case actions.RECEIVE_HAS_WEB3:
       return Object.assign({}, state, {
         message: 'Found web3 instance'

@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Card, Grid, Header, Segment } from 'semantic-ui-react'
+import { Card, Grid, Header, List, Message, Segment } from 'semantic-ui-react'
 
 import { voteOnParameter } from '../actions/parameters'
 import { getParameters } from '../reducers/parameters'
 
 import Head from '../components/common/Head'
-import { constructClientParameterDetails } from '../helpers/parameters/constructClientParameterDetails'
+import Parameter from '../components/common/Parameter'
 
-class Parameters extends Component {
+export class Parameters extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -51,14 +51,34 @@ class Parameters extends Component {
   }
 
   render() {
-    const { parameters } = this.props
+    const { parameters, pctDID } = this.props
     const { parameterValue } = this.state
 
     return (
       <div>
-        <Head title="Votable Parameters" />
+        <Head title="Distense Votable Governance Parameters" />
         <Header as="h1">Parameters</Header>
         <Header as="h3">Govern if you dare (and own DID)</Header>
+        <Grid.Row>
+          <Grid.Column width={16}>
+            <Message>
+              <Message.Header>adf</Message.Header>
+              <List bulleted>
+                <List.Item>
+                  A maximum vote by you will affect parameter values by
+                </List.Item>
+                <List.Item>
+                  Your proposal can be anything, it doesn't necessarily have to
+                </List.Item>
+                <List.Item>
+                  Remember that when you propose, it is likely that DID will be
+                  issued for the completion of the task. The fewer DID the
+                  better.
+                </List.Item>
+              </List>
+            </Message>
+          </Grid.Column>
+        </Grid.Row>
         <Grid.Row>
           <Card.Group>
             {parameters.length > 0 ? (
@@ -69,6 +89,7 @@ class Parameters extends Component {
                   onChange={this.handleInputChange}
                   onClick={this.onClick}
                   parameterValue={parameterValue}
+                  pctDID={pctDID}
                 />
               ))
             ) : (
@@ -89,40 +110,9 @@ class Parameters extends Component {
   }
 }
 
-const Parameter = ({ param, onClick }) => {
-  const p = constructClientParameterDetails(param)
-
-  return (
-    <Card className="parameter-card-width" raised>
-      <Card.Content>
-        <Card.Header>{p.title}</Card.Header>
-        <Card.Meta>{p.placeholder}</Card.Meta>
-        <Card.Content>Current Value: {p.value}</Card.Content>
-        <Card.Content extra>
-          <Button
-            color="black"
-            id="upvote"
-            basic
-            onClick={e => onClick(p.title, 'upvote', e)}
-          >
-            DownVote
-          </Button>
-          <Button
-            color="black"
-            id="downvote"
-            basic
-            onClick={e => onClick(p.title, 'downvote', e)}
-          >
-            UpVote
-          </Button>
-        </Card.Content>
-      </Card.Content>
-    </Card>
-  )
-}
-
 const mapStateToProps = state => ({
-  parameters: getParameters(state)
+  parameters: getParameters(state),
+  pctDID: state.user.user.pctDID
 })
 
 const mapDispatchToProps = dispatch => ({

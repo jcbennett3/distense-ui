@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux'
 
 import {
-  RECEIVE_ACCOUNT_TRANSACTIONS,
   RECEIVE_ACCOUNT,
   RECEIVE_ACCOUNTS,
+  RECEIVE_ACCOUNT_TRANSACTIONS,
   RECEIVE_ACCOUNT_UNLOCKED,
   RECEIVE_HAS_WEB3,
-  RECEIVE_USER_NUM_DID,
   RECEIVE_NETWORK,
+  RECEIVE_USER_NUM_DID,
   RECEIVE_USER_NUM_ETHER
 } from '../constants/actionTypes'
 
@@ -17,7 +17,8 @@ const user = (
     accountUnlocked: false,
     numDID: 0,
     network: null,
-    numEther: 0
+    numEther: 0,
+    pctDID: 0
   },
   action
 ) => {
